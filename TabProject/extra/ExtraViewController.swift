@@ -41,10 +41,10 @@ class ExtraViewController: UIViewController {
     }
     
     @IBAction func scaleBig(_ sender: Any) {
+        
+        let viewController:UIViewController = UIStoryboard(name: "Game", bundle: nil).instantiateViewController(withIdentifier: "NavigationGameController") as UIViewController
 
-        UIView.animate(withDuration: 2.0) {
-            self.animationView.transform = self.animationView.transform.scaledBy(x: 0.7, y: 0.7)
-        }
+        self.present(viewController, animated: true, completion: nil)
 
     }
 
