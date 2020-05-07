@@ -17,6 +17,9 @@
 		5D115A892459BDEF007FDC47 /* DashModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D115A882459BDEF007FDC47 /* DashModel.swift */; };
 		5D115A8B2459BF2E007FDC47 /* DashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D115A8A2459BF2E007FDC47 /* DashViewController.swift */; };
 		5D115A8E2459E3E6007FDC47 /* Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D115A8D2459E3E6007FDC47 /* Parsing.swift */; };
+		5D6B65A82464069E00FBB106 /* GameBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B65A72464069E00FBB106 /* GameBoardView.swift */; };
+		5D6B65AA246453AD00FBB106 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B65A9246453AD00FBB106 /* GameViewController.swift */; };
+		5D6B65AC24646CC700FBB106 /* SimplePathFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B65AB24646CC700FBB106 /* SimplePathFinder.swift */; };
 		5D779BB7246074A300CC6B43 /* HorizontalCityViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D779BB5246074A300CC6B43 /* HorizontalCityViewCell.swift */; };
 		5D779BB8246074A300CC6B43 /* HorizontalCityViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D779BB6246074A300CC6B43 /* HorizontalCityViewCell.xib */; };
 		5DB6701F245B055700B8492C /* CityDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB6701E245B055700B8492C /* CityDetailsView.swift */; };
@@ -49,6 +52,9 @@
 		5D115A882459BDEF007FDC47 /* DashModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashModel.swift; sourceTree = "<group>"; };
 		5D115A8A2459BF2E007FDC47 /* DashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashViewController.swift; sourceTree = "<group>"; };
 		5D115A8D2459E3E6007FDC47 /* Parsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parsing.swift; sourceTree = "<group>"; };
+		5D6B65A72464069E00FBB106 /* GameBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardView.swift; sourceTree = "<group>"; };
+		5D6B65A9246453AD00FBB106 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		5D6B65AB24646CC700FBB106 /* SimplePathFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimplePathFinder.swift; sourceTree = "<group>"; };
 		5D779BB5246074A300CC6B43 /* HorizontalCityViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalCityViewCell.swift; sourceTree = "<group>"; };
 		5D779BB6246074A300CC6B43 /* HorizontalCityViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HorizontalCityViewCell.xib; sourceTree = "<group>"; };
 		5DB6701E245B055700B8492C /* CityDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityDetailsView.swift; sourceTree = "<group>"; };
@@ -141,6 +147,9 @@
 			children = (
 				5DB6F0172461B45200A375BC /* Game.storyboard */,
 				5D02E9F22463077300E78626 /* Sss.swift */,
+				5D6B65A72464069E00FBB106 /* GameBoardView.swift */,
+				5D6B65A9246453AD00FBB106 /* GameViewController.swift */,
+				5D6B65AB24646CC700FBB106 /* SimplePathFinder.swift */,
 			);
 			path = game;
 			sourceTree = "<group>";
@@ -252,9 +261,12 @@
 				5DB6F00F24615EC900A375BC /* SimpleViewCell.swift in Sources */,
 				5D115A892459BDEF007FDC47 /* DashModel.swift in Sources */,
 				5DB6F01224615EC900A375BC /* TestViewCell.swift in Sources */,
+				5D6B65AC24646CC700FBB106 /* SimplePathFinder.swift in Sources */,
 				5DCDECF8245DB9FE005653D0 /* ExtraViewController.swift in Sources */,
+				5D6B65A82464069E00FBB106 /* GameBoardView.swift in Sources */,
 				5DB6701F245B055700B8492C /* CityDetailsView.swift in Sources */,
 				5D02E9F32463077300E78626 /* Sss.swift in Sources */,
+				5D6B65AA246453AD00FBB106 /* GameViewController.swift in Sources */,
 				5DB6F01124615EC900A375BC /* DoubleViewCell.swift in Sources */,
 				5D115A872459BD91007FDC47 /* CityViewCell.swift in Sources */,
 				5DB6F00424615E7700A375BC /* ViewModel.swift in Sources */,
