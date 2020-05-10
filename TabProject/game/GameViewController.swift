@@ -16,7 +16,7 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        game = Game(grid: SquareGrid(nSide: 9), view: gameView, pathFinder: DummyPathFinder())
+        game = Game(grid: HexagonalGrid(nSide: 6), view: gameView, pathFinder: SinglePathFinder())
         game?.start()
     }
     

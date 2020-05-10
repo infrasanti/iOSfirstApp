@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		5D02E9F32463077300E78626 /* Sss.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D02E9F22463077300E78626 /* Sss.swift */; };
+		5D0BFAF9246825CD004FEA38 /* DoublePathFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0BFAF8246825CD004FEA38 /* DoublePathFinder.swift */; };
+		5D0BFAFB246867CB004FEA38 /* Grids.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0BFAFA246867CB004FEA38 /* Grids.swift */; };
 		5D115A702459B066007FDC47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D115A6F2459B066007FDC47 /* AppDelegate.swift */; };
 		5D115A722459B066007FDC47 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D115A712459B066007FDC47 /* SceneDelegate.swift */; };
 		5D115A772459B066007FDC47 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D115A752459B066007FDC47 /* Main.storyboard */; };
@@ -41,6 +43,8 @@
 
 /* Begin PBXFileReference section */
 		5D02E9F22463077300E78626 /* Sss.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sss.swift; sourceTree = "<group>"; };
+		5D0BFAF8246825CD004FEA38 /* DoublePathFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoublePathFinder.swift; sourceTree = "<group>"; };
+		5D0BFAFA246867CB004FEA38 /* Grids.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grids.swift; sourceTree = "<group>"; };
 		5D115A6C2459B066007FDC47 /* TabProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TabProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D115A6F2459B066007FDC47 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D115A712459B066007FDC47 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -146,10 +150,12 @@
 			isa = PBXGroup;
 			children = (
 				5DB6F0172461B45200A375BC /* Game.storyboard */,
-				5D02E9F22463077300E78626 /* Sss.swift */,
-				5D6B65A72464069E00FBB106 /* GameBoardView.swift */,
 				5D6B65A9246453AD00FBB106 /* GameViewController.swift */,
+				5D6B65A72464069E00FBB106 /* GameBoardView.swift */,
+				5D02E9F22463077300E78626 /* Sss.swift */,
 				5D6B65AB24646CC700FBB106 /* SimplePathFinder.swift */,
+				5D0BFAF8246825CD004FEA38 /* DoublePathFinder.swift */,
+				5D0BFAFA246867CB004FEA38 /* Grids.swift */,
 			);
 			path = game;
 			sourceTree = "<group>";
@@ -266,11 +272,13 @@
 				5D6B65A82464069E00FBB106 /* GameBoardView.swift in Sources */,
 				5DB6701F245B055700B8492C /* CityDetailsView.swift in Sources */,
 				5D02E9F32463077300E78626 /* Sss.swift in Sources */,
+				5D0BFAF9246825CD004FEA38 /* DoublePathFinder.swift in Sources */,
 				5D6B65AA246453AD00FBB106 /* GameViewController.swift in Sources */,
 				5DB6F01124615EC900A375BC /* DoubleViewCell.swift in Sources */,
 				5D115A872459BD91007FDC47 /* CityViewCell.swift in Sources */,
 				5DB6F00424615E7700A375BC /* ViewModel.swift in Sources */,
 				5DB6F00324615E7700A375BC /* DataModel.swift in Sources */,
+				5D0BFAFB246867CB004FEA38 /* Grids.swift in Sources */,
 				5DCDECFB245DD270005653D0 /* AccountViewController.swift in Sources */,
 				5D115A702459B066007FDC47 /* AppDelegate.swift in Sources */,
 				5DB6F01524616A8A00A375BC /* Api.swift in Sources */,

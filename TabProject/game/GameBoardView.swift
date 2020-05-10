@@ -17,6 +17,8 @@ class GameBoardView: UIView {
     
     var grid: Grid?
     
+    private var path: CGPath?
+    
     private var cellPaths: [CGPath]?
     
     required init?(coder aDecoder: NSCoder) {
@@ -31,6 +33,24 @@ class GameBoardView: UIView {
     
     private func initialize() {
         self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(clickAction(_:))))
+    }
+    
+    func drawSolution(sequence: [Int]) {
+        if (sequence.count <= 1) {
+            return
+        }
+        if let cellPaths = cellPaths {
+            let path = CGMutablePath()
+            let cellPath = cellPaths[sequence.first!]
+            path.move(to: cellPath.center())
+            
+            for i in 1..<sequence.count {
+                path.addLine(to: cellPaths[sequence[i]].center())
+            }
+            
+            self.path = path
+        }
+        
     }
     
     @objc func clickAction(_ sender: UITapGestureRecognizer) {
@@ -50,13 +70,9 @@ class GameBoardView: UIView {
     override func draw(_ rect: CGRect) {
         if let grid = grid, let ctx = UIGraphicsGetCurrentContext() {
             if cellPaths == nil {
-                cellPaths = [CGPath]()
-                for cell in 0..<grid.size {
-                    cellPaths?.append(grid.path(for: cell, with: rect.width, with: rect.height))
-                }
+                cellPaths = grid.paths(with: rect.width, with: rect.height)
             }
             
-            ctx.setFillColor(UIColor.black.cgColor)
             ctx.setLineWidth(2)
             
             for cell in 0..<grid.size {
@@ -64,6 +80,20 @@ class GameBoardView: UIView {
                 ctx.addPath(cellPaths![cell])
                 ctx.drawPath(using: CGPathDrawingMode.fillStroke)
             }
+            
+            if let path = path {
+                ctx.setFillColor(UIColor.black.cgColor)
+                ctx.addPath(path)
+                ctx.drawPath(using: CGPathDrawingMode.stroke)
+            }
+            
+            
         }
+    }
+}
+
+extension CGPath {
+    func  center() -> CGPoint {
+        return CGPoint(x: self.boundingBox.midX, y: self.boundingBox.midY)
     }
 }

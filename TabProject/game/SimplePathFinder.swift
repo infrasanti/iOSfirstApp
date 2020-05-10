@@ -48,7 +48,7 @@ class SantiPathFinder: PathFinder {
             newPaths.forEach { (path) in
                 if let sameEndPath = paths.first(where: { (existingPath) -> Bool in
                     existingPath.end == path.end}) {
-                    if (sameEndPath.path.count > path.path.count) {
+                    if (path.path.count < sameEndPath.path.count) {
                         paths.remove(at: paths.firstIndex(of: sameEndPath)!)
                         pathsToAdd.append(path)
                     }
@@ -72,8 +72,21 @@ class SantiPathFinder: PathFinder {
     }
     
     private func reduce(_ paths: [Path]) -> [Path] {
-        //TODO        
-        return paths
+        var bestPaths = [Int:Path]()
+        paths.forEach { (path) in
+            if let currentPath = bestPaths[path.end] {
+                if (path.path.count < currentPath.path.count) {
+                    bestPaths[path.end] = path
+                }
+            } else {
+                bestPaths[path.end] = path
+            }
+        }
+        return bestPaths.map { (arg0) -> Path in
+            
+            let (_, value) = arg0
+            return value
+        }
     }
     
     class Path: Equatable {

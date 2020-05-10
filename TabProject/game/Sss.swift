@@ -16,6 +16,8 @@ protocol Grid {
     func getNeighbours(of position: Int) -> [Int]
     func update(cell: Int, value: Int)
     func lines(for position: Int) -> [[Int]]
+    func paths(with width: CGFloat, with height: CGFloat) -> [CGPath]
+    //TODO remove this method
     func path(for cellIndex: Int, with width: CGFloat, with height: CGFloat) -> CGPath
 }
 
@@ -35,6 +37,15 @@ extension Grid {
         set {
             update(cell: index, value: newValue)
         }
+    }
+    
+    //TODO remove
+    func paths( with width: CGFloat, with height: CGFloat) -> [CGPath] {
+        var paths = [CGPath]()
+        for i in 0..<size {
+            paths.append(path(for: i, with: width, with: height))
+        }
+        return paths
     }
 }
 
@@ -127,6 +138,8 @@ class Game {
         if (grid[clickedCell] != 0) {
             //If a non empty cell clicked, lets select it
             grid.selectedCell = clickedCell
+            print("!!! cell selected")
+
         } else {
             if let selectedPostion = grid.selectedCell {
                 if (tryToMove(from: selectedPostion, to: clickedCell)) {
@@ -154,12 +167,14 @@ class Game {
     private func tryToMove(from initPosition: Int, to finalPosition: Int) -> Bool {
         if let path = pathFinder.computePath(grid: grid, from: initPosition, to: finalPosition) {
             //TODO anim cell using path
+            view.drawSolution(sequence: path)
             grid[finalPosition] = grid.selectedValue!
             grid[initPosition] = 0
             grid.selectedCell = nil
             return true
         } else {
             //TODO show impossible path
+            print("!!! not path found")
             return false
         }
     }
@@ -209,128 +224,7 @@ class Game {
     }
 }
 
-class SquareGrid: Grid {
-    
-    let nSide: Int
-    var cells: [[Int]]
-    
-    init(nSide: Int) {
-        self.nSide = nSide
-        self.size = nSide * nSide
-        self.cells = Array(repeating: Array(repeating: 0, count: nSide), count: nSide)
-    }
-    
-    var size: Int
-    
-    var selectedCell: Int?
-    
-    func getCellValue(at position: Int) -> Int {
-        let (x,y) = transform(position)
-        return cells[x][y]
-    }
-    
-    func getNeighbours(of position: Int) -> [Int] {
-        let (x,y) = transform(position)
-        var neighbours = [Int]()
-        if (x > 0) {
-            neighbours.append(transform((x - 1, y)))
-        }
-        
-        if (x < nSide - 1) {
-            neighbours.append(transform((x + 1, y)))
-        }
-        
-        if (y > 0) {
-            neighbours.append(transform((x, y - 1)))
-        }
-        
-        if (y < nSide - 1) {
-            neighbours.append(transform((x, y + 1)))
-        }
 
-        return neighbours
-    }
-    
-    func update(cell: Int, value: Int) {
-        let (x,y) = transform(cell)
-        cells[x][y] = value
-    }
-    
-    func lines(for position: Int) -> [[Int]] {
-        let (x,y) = transform(position)
-        var lines = [[Int]]()
-        var lineH = [Int]()
-        var lineV = [Int]()
-        var lineDa = [Int]()
-        var lineDb = [Int]()
-
-        for i in 0..<nSide {
-            lineH.append(transform((x, i)))
-            lineV.append(transform((i, y)))
-        }
-        
-        var xDa = 0
-        var yDa = 0
-        if (x > y) {
-            xDa = x - y
-        } else {
-            yDa = y - x
-        }
-        
-        while(xDa < nSide && yDa < nSide) {
-            lineDa.append(transform((xDa, yDa)))
-            xDa += 1
-            yDa += 1
-        }
-        
-        var xDb = 0
-        var yDb = nSide - 1
-        if (x + y > nSide - 1) {
-            xDb = (x + y) - nSide + 1
-        } else {
-            yDb = x + y
-        }
-        
-        while(xDb < nSide && yDb >= 0) {
-            lineDb.append(transform((xDb, yDb)))
-            xDb += 1
-            yDb -= 1
-        }
-        
-        lines.append(lineH)
-        lines.append(lineV)
-        lines.append(lineDa)
-        lines.append(lineDb)
-        return lines
-    }
-    
-    func path(for cellIndex: Int, with width: CGFloat, with height: CGFloat) -> CGPath {
-        let (x,y) = transform(cellIndex)
-        let wCell = CGFloat(width) / CGFloat(nSide)
-        let hCell = CGFloat(height) / CGFloat(nSide)
-
-        let xCell = wCell * CGFloat(x)
-        let yCell = hCell * CGFloat(y)
-        
-        let path = CGMutablePath()
-        path.move(to: CGPoint(x: xCell, y: yCell))
-        path.addLine(to: CGPoint(x: xCell + wCell, y: yCell))
-        path.addLine(to: CGPoint(x: xCell + wCell, y: yCell + wCell))
-        path.addLine(to: CGPoint(x: xCell, y: yCell + wCell))
-        path.closeSubpath()
-        return path
-    }
-    
-    private func transform(_ position: Int) -> (Int, Int) {
-        let y: Int = position / nSide
-        let x = position - y * nSide
-        return (x, y)
-    }
-    
-    private func transform(_ coordinates: (Int, Int)) -> Int {
-        return coordinates.1 * nSide + coordinates.0
-    }
-}
 
 class DummyPathFinder: PathFinder {
     func computePath(grid: Grid, from: Int, to: Int) -> [Int]? {
