@@ -40,7 +40,7 @@ class CityDetailsView: UIView {
         addSubview(rootContainer)
     }
     
-    public func setCity(_ city: CityData) {
+    public func set(city: CityData) {
         tempText.text = "\(city.temp)"
         maxTempText.text = "\(city.maxMinTemp.0)º"
         minTempText.text = "\(city.maxMinTemp.1)º"
@@ -50,6 +50,6 @@ class CityDetailsView: UIView {
 
         nameText.text = city.name
         weatherText.text = city.description
-        icon.image = city.icon.getIcon()
+        icon.image = city.icon.image
     }
 }

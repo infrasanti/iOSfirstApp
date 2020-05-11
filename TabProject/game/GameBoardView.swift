@@ -10,8 +10,7 @@ import UIKit
 
 class GameBoardView: UIView {
     
-    private let colors = [UIColor.white.cgColor, UIColor.blue.cgColor, UIColor.red.cgColor, UIColor.green.cgColor, UIColor.cyan.cgColor , UIColor.magenta.cgColor, UIColor.yellow.cgColor, UIColor.gray.cgColor]
-    
+    public static let colors = [UIColor.white.cgColor, UIColor.blue.cgColor, UIColor.red.cgColor, UIColor.green.cgColor, UIColor.orange.cgColor , UIColor.magenta.cgColor, UIColor.yellow.cgColor, UIColor.gray.cgColor]
     
     var listener: ((Int) -> Void)?
     
@@ -76,18 +75,23 @@ class GameBoardView: UIView {
             ctx.setLineWidth(2)
             
             for cell in 0..<grid.size {
-                ctx.setFillColor(colors[grid[cell]])
+                ctx.setFillColor(GameBoardView.colors[grid[cell]])
                 ctx.addPath(cellPaths![cell])
                 ctx.drawPath(using: CGPathDrawingMode.fillStroke)
             }
             
+            if let selectedCell = grid.selectedCell {
+                ctx.setLineWidth(5)
+                ctx.addPath(cellPaths![selectedCell])
+                ctx.drawPath(using: CGPathDrawingMode.stroke)
+            }
+            
             if let path = path {
+                ctx.setLineWidth(2)
                 ctx.setFillColor(UIColor.black.cgColor)
                 ctx.addPath(path)
                 ctx.drawPath(using: CGPathDrawingMode.stroke)
             }
-            
-            
         }
     }
 }

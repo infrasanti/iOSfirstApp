@@ -12,19 +12,17 @@ import UIKit
 protocol Grid {
     var size: Int {get}
     var selectedCell: Int? {get set}
-    func getCellValue(at position: Int) -> Int
-    func getNeighbours(of position: Int) -> [Int]
-    func update(cell: Int, value: Int)
-    func lines(for position: Int) -> [[Int]]
+    func getCellValue(for cellIndex: Int) -> Int
+    func getNeighbours(of cellIndex: Int) -> [Int]
+    func update(cellIndex: Int, value: Int)
+    func lines(withCenter cellIndex: Int) -> [[Int]]
     func paths(with width: CGFloat, with height: CGFloat) -> [CGPath]
-    //TODO remove this method
-    func path(for cellIndex: Int, with width: CGFloat, with height: CGFloat) -> CGPath
 }
 
 extension Grid {
     var selectedValue: Int? {
-        if let selectedPosition = selectedCell {
-            return getCellValue(at: selectedPosition)
+        if let selectedCell = selectedCell {
+            return getCellValue(for: selectedCell)
         } else {
             return nil
         }
@@ -32,20 +30,11 @@ extension Grid {
     
     subscript(index: Int) -> Int {
         get {
-            return getCellValue(at: index)
+            return getCellValue(for: index)
         }
         set {
-            update(cell: index, value: newValue)
+            update(cellIndex: index, value: newValue)
         }
-    }
-    
-    //TODO remove
-    func paths( with width: CGFloat, with height: CGFloat) -> [CGPath] {
-        var paths = [CGPath]()
-        for i in 0..<size {
-            paths.append(path(for: i, with: width, with: height))
-        }
-        return paths
     }
 }
 
@@ -53,9 +42,18 @@ protocol PathFinder {
     func computePath(grid: Grid, from: Int, to: Int) -> [Int]?
 }
 
+protocol GameView {
+    var points: Int {get set}
+    var nextColors: [Int] {get set}
+    var listener: ((Int) -> Void)? {get set}
+    func draw(cellMovePath: [Int])
+    func draw()
+    func showGameOver()
+}
+
 class Game {
     var grid: Grid
-    var view: GameBoardView
+    var view: GameView
     let pathFinder: PathFinder
     let nColors, nNewItems, nItemsInLineToDelete: Int
     
@@ -67,7 +65,7 @@ class Game {
 
     
     init(grid: Grid,
-         view: GameBoardView,
+         view: GameView,
          pathFinder: PathFinder,
          nColors: Int = 5,
          nNewItems: Int = 3,
@@ -75,7 +73,6 @@ class Game {
         
         self.grid = grid
         self.view = view
-        view.grid = grid
         self.pathFinder = pathFinder
         self.nColors = nColors
         self.nNewItems = nNewItems
@@ -91,18 +88,21 @@ class Game {
     
     func nextTurn() {
         turn += 1
+        if nNewItems >= nEmptyCells {
+            view.showGameOver()
+            return
+        }
+        
+        
         nextCellsValues.forEach { (value) in
             if (!tryToAddRandomCell(with: value)) {
-                gameOver()
+                view.showGameOver()
                 return
             }
         }
         nextCellsValues = generateNextCellValues()
+        view.nextColors = nextCellsValues
         draw()
-    }
-    
-    func gameOver() {
-        //TODO
     }
     
     func generateNextCellValues() -> [Int] {
@@ -150,6 +150,7 @@ class Game {
                         nCellsDeleted += nItemsDeleted
                         nEmptyCells += nItemsDeleted
                         points += nItemsDeleted * (nItemsDeleted - nItemsInLineToDelete + 1)
+                        view.points = points
                         itemsToDelete.forEach { (item) in
                             grid[item] = 0
                         }
@@ -167,7 +168,7 @@ class Game {
     private func tryToMove(from initPosition: Int, to finalPosition: Int) -> Bool {
         if let path = pathFinder.computePath(grid: grid, from: initPosition, to: finalPosition) {
             //TODO anim cell using path
-            view.drawSolution(sequence: path)
+            view.draw(cellMovePath: path)
             grid[finalPosition] = grid.selectedValue!
             grid[initPosition] = 0
             grid.selectedCell = nil
@@ -179,14 +180,14 @@ class Game {
         }
     }
     
-    private func computeCellsToDelete(for position: Int) -> [Int] {
-        let value = grid[position]
+    private func computeCellsToDelete(for cellIndex: Int) -> [Int] {
+        let value = grid[cellIndex]
         var cellsToDelete = Set<Int>()
-        let lines = grid.lines(for: position)
+        let lines = grid.lines(withCenter: cellIndex)
         for line in lines {
-            let index = line.firstIndex(of: position)!
+            let index = line.firstIndex(of: cellIndex)!
             var cellsToDeleteInLine = [Int]()
-            cellsToDeleteInLine.append(position)
+            cellsToDeleteInLine.append(cellIndex)
             var i = index + 1
             while i < line.count {
                 let cell = line[i]
@@ -218,17 +219,9 @@ class Game {
         
     }
     
-    
     func draw() {
-        view.setNeedsDisplay()
+        view.draw()
     }
 }
 
-
-
-class DummyPathFinder: PathFinder {
-    func computePath(grid: Grid, from: Int, to: Int) -> [Int]? {
-        return [Int]()
-    }
-}
 

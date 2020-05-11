@@ -9,43 +9,39 @@
 import UIKit
 
 class ExtraViewController: UIViewController {
-
-    @IBOutlet var animationView: UIStackView!
+    
+    @IBOutlet var gridSelector: UISegmentedControl!
+    
+    @IBOutlet var incrementControl: UIStepper!
+    
+    @IBOutlet var nSideLabel: UILabel!
+    
+    private var nSide: Int {
+        return Int(incrementControl.value)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        incrementControl.stepValue = 1
+        incrementControl.minimumValue = 5
+        incrementControl.maximumValue = 20
+        incrementControl.addTarget(self, action: #selector(stepperChanged), for: .valueChanged)
+        nSideLabel.text = "\(nSide)"
         // Do any additional setup after loading the view.
     }
     
-
-    @IBAction func changeY(_ sender: Any) {
-        let initX = animationView.frame.origin.x
-        let initY = animationView.frame.origin.y
-        
-        let initW = animationView.frame.width
-        let initH = animationView.frame.height
-        
-        UIView.animate(withDuration: 2.0) {
-            self.animationView.frame = CGRect(x: initX, y: initY + 100, width: initW, height: initH)
-        }
-
+    @objc func stepperChanged() {
+        nSideLabel.text = "\(nSide)"
     }
     
-    @IBAction func scaleSmall(_ sender: Any) {
-        
-        UIView.animate(withDuration: 2.0) {
-            self.animationView.transform = self.animationView.transform.scaledBy(x: 0.7, y: 0.7)
+    @IBAction func startGame(_ sender: Any) {
+        let gameController = GameController()
+        if (gridSelector.selectedSegmentIndex == 0) {
+            gameController.grid = SquareGrid(nSide: nSide)
+        } else {
+            gameController.grid = HexagonalGrid(nSide: nSide)
         }
-
+        self.present(gameController, animated: true)
     }
     
-    @IBAction func scaleBig(_ sender: Any) {
-        
-        let viewController:UIViewController = UIStoryboard(name: "Game", bundle: nil).instantiateViewController(withIdentifier: "NavigationGameController") as UIViewController
-
-        self.present(viewController, animated: true, completion: nil)
-
-    }
-
 }

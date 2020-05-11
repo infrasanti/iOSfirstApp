@@ -64,36 +64,44 @@ enum WeatherIcon: String {
     case mistNight = "50n"
     case unknown = ""
     
-    private func getIconName() -> String {
-        switch self {
-        case .sunny:
-            return "sun.max"
-        case .sunnyNight:
-            return "moon"
-        case .fewClouds:
-            return "cloud.sun"
-        case .fewCloudsNight:
-            return "cloud.moon"
-        case .clouds, .cloudsNight:
-            return "cloud"
-        case .manyClouds, .manyCloudsNight:
-            return "smoke"
-        case .showerRain, .showerRainNight:
-            return "cloud.drizzle"
-        case .rain, .rainNight:
-            return "cloud.heavyrain"
-        case .storm, .stormNight:
-            return "cloud.bolt.rain"
-        case .snow, .snowNight:
-            return "snow"
-        case .mist, .mistNight:
-            return "sun.haze"
-        case .unknown:
-            return "questionmark.circle"
-        }
+    public var image: UIImage {
+        return UIImage(systemName: iconName)!
     }
     
-    private func getColorName() -> String {
+    public var color: UIColor {
+        return UIColor(named: colorName)!
+    }
+    
+    private var iconName: String {
+        switch self {
+               case .sunny:
+                   return "sun.max"
+               case .sunnyNight:
+                   return "moon"
+               case .fewClouds:
+                   return "cloud.sun"
+               case .fewCloudsNight:
+                   return "cloud.moon"
+               case .clouds, .cloudsNight:
+                   return "cloud"
+               case .manyClouds, .manyCloudsNight:
+                   return "smoke"
+               case .showerRain, .showerRainNight:
+                   return "cloud.drizzle"
+               case .rain, .rainNight:
+                   return "cloud.heavyrain"
+               case .storm, .stormNight:
+                   return "cloud.bolt.rain"
+               case .snow, .snowNight:
+                   return "snow"
+               case .mist, .mistNight:
+                   return "sun.haze"
+               case .unknown:
+                   return "questionmark.circle"
+               }
+    }
+    
+    private var colorName: String {
         switch self {
         case .sunny:
             return "sun"
@@ -108,11 +116,4 @@ enum WeatherIcon: String {
         }
     }
     
-    public func getIcon() -> UIImage {
-        return UIImage(systemName: getIconName())!
-    }
-    
-    public func getColor() -> UIColor {
-        return UIColor(named: getColorName())!
-    }
 }

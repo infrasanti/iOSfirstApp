@@ -33,11 +33,11 @@ class CityViewCell: UICollectionViewCell {
         layer.cornerRadius = 10
     }
     
-    public func setCity(_ city: CityData) {
+    public func set(city: CityData) {
         cityName.text = city.name
         weatherText.text = city.description
-        icon.image = city.icon.getIcon()
-        layer.backgroundColor = city.icon.getColor().cgColor
+        icon.image = city.icon.image
+        layer.backgroundColor = city.icon.color.cgColor
     }
     
     func shrink(down: Bool) {

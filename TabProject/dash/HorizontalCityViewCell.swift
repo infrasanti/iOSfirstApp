@@ -21,12 +21,12 @@ class HorizontalCityViewCell: UITableViewCell {
     @IBOutlet var cityName: UILabel!
     @IBOutlet var icon: UIImageView!
     
-    public func setCity(_ city: CityData) {
+    public func set(city: CityData) {
         cityName.text = city.name
-        icon.image = city.icon.getIcon()
+        icon.image = city.icon.image
         weather.text = city.description
         temperature.text = "\(city.temp) ºC"
-        layer.backgroundColor = city.icon.getColor().cgColor
+        layer.backgroundColor = city.icon.color.cgColor
     }
     
 }

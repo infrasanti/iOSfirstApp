@@ -91,7 +91,7 @@ class DashViewController: UIViewController, UICollectionViewDataSource, UITableV
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CityCell", for: indexPath) as? CityViewCell {
-            cell.setCity(items[indexPath.row])
+            cell.set(city: items[indexPath.row])
             cell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapCity(_:))))
             return cell
         }
@@ -104,7 +104,7 @@ class DashViewController: UIViewController, UICollectionViewDataSource, UITableV
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: HorizontalCityViewCell.reuseIdentifier, for: indexPath) as? HorizontalCityViewCell {
-            cell.setCity(items[indexPath.row])
+            cell.set(city: items[indexPath.row])
             cell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapHorizontalCity(_:))))
             return cell
         }
@@ -113,9 +113,9 @@ class DashViewController: UIViewController, UICollectionViewDataSource, UITableV
     
     private func onCitySelected(_ index: Int) {
         let city = items[index]
-        view.backgroundColor = city.icon.getColor()
-        bottomPanel.backgroundColor = city.icon.getColor()
-        cityDetailsView.setCity(city)
+        view.backgroundColor = city.icon.color
+        bottomPanel.backgroundColor = city.icon.color
+        cityDetailsView.set(city: city)
     }
     
     private func onCitiesReady(_ cities: [City]) {

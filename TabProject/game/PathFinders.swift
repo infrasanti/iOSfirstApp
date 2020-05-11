@@ -8,22 +8,24 @@
 
 import Foundation
 
+class DummyPathFinder: PathFinder {
+    func computePath(grid: Grid, from: Int, to: Int) -> [Int]? {
+        return [Int]()
+    }
+}
+
 class SinglePathFinder : PathFinder {
     
     var bestPaths = [Int: Path]()
     var lastAddedPaths = [Path]()
     
     func computePath(grid: Grid, from: Int, to: Int) -> [Int]? {
-        if (grid.getCellValue(at: to) != 0) {
+        if (grid.getCellValue(for: to) != 0) {
             return nil
         }
         
         //INIT
-        let initPath = Path(sequence: [from])
-        bestPaths.removeAll()
-        lastAddedPaths.removeAll()
-        bestPaths[initPath.end] = initPath
-        lastAddedPaths.append(initPath)
+        initialization(from: from)
         
         let maxIteration = grid.size
         
@@ -35,8 +37,14 @@ class SinglePathFinder : PathFinder {
         }
         
         return nil
-        
-        
+    }
+    
+    func initialization(from: Int) {
+        let initPath = Path(sequence: [from])
+        bestPaths.removeAll()
+        lastAddedPaths.removeAll()
+        bestPaths[initPath.end] = initPath
+        lastAddedPaths.append(initPath)
     }
     
     func iteration(grid: Grid, target: Int) -> (Bool, Path?) {
@@ -77,8 +85,55 @@ class SinglePathFinder : PathFinder {
         return (false, nil)
         
     }
+}
 
+class DoublePathFinder: PathFinder {
+    
+    func computePath(grid: Grid, from: Int, to: Int) -> [Int]? {
+        let pathFinderInit = SinglePathFinder()
+        let pathFinderEnd = SinglePathFinder()
+        pathFinderInit.initialization(from: from)
+        pathFinderEnd.initialization(from: to)
+        
+        let maxIteration = grid.size
+        
+        for _ in 1...maxIteration {
+            let (finishInit, solutionInit) = pathFinderInit.iteration(grid: grid, target: to)
+            if (finishInit) {
+                return solutionInit?.sequence
+            }
+            
+            if let mergedSolution = checkMergePaths(initPaths: pathFinderInit.lastAddedPaths, endPaths: pathFinderEnd.lastAddedPaths) {
+                return mergedSolution
+            }
+            
+            let (finishEnd, solutionEnd) = pathFinderEnd.iteration(grid: grid, target: from)
+            if (finishEnd) {
+                return solutionEnd?.sequence
+            }
+            
+            if let mergedSolution = checkMergePaths(initPaths: pathFinderInit.lastAddedPaths, endPaths: pathFinderEnd.lastAddedPaths) {
+                return mergedSolution
+            }
+        }
+        
+        return nil
 
+    }
+    
+    private func checkMergePaths(initPaths: [Path], endPaths: [Path]) -> [Int]? {
+        for initPath in initPaths {
+            for endPath in endPaths {
+                if (initPath.end == endPath.end) {
+                    var solution = [Int]()
+                    solution.append(contentsOf: initPath.sequence)
+                    solution.append(contentsOf: endPath.sequence.reversed().dropFirst())
+                    return solution
+                }
+            }
+        }
+        return nil
+    }
 }
 
 class Path {

@@ -24,7 +24,7 @@ class SquareGrid: Grid {
     
     var selectedCell: Int?
     
-    func getCellValue(at position: Int) -> Int {
+    func getCellValue(for position: Int) -> Int {
         let (x,y) = transform(position)
         return cells[x][y]
     }
@@ -51,13 +51,13 @@ class SquareGrid: Grid {
         return neighbours
     }
     
-    func update(cell: Int, value: Int) {
-        let (x,y) = transform(cell)
+    func update(cellIndex: Int, value: Int) {
+        let (x,y) = transform(cellIndex)
         cells[x][y] = value
     }
     
-    func lines(for position: Int) -> [[Int]] {
-        let (x,y) = transform(position)
+    func lines(withCenter cellIndex: Int) -> [[Int]] {
+        let (x,y) = transform(cellIndex)
         var lines = [[Int]]()
         var lineH = [Int]()
         var lineV = [Int]()
@@ -104,21 +104,24 @@ class SquareGrid: Grid {
         return lines
     }
     
-    func path(for cellIndex: Int, with width: CGFloat, with height: CGFloat) -> CGPath {
-        let (x,y) = transform(cellIndex)
+    func paths(with width: CGFloat, with height: CGFloat) -> [CGPath] {
+        var paths = [CGPath]()
         let wCell = CGFloat(width) / CGFloat(nSide)
         let hCell = CGFloat(height) / CGFloat(nSide)
 
-        let xCell = wCell * CGFloat(x)
-        let yCell = hCell * CGFloat(y)
-        
-        let path = CGMutablePath()
-        path.move(to: CGPoint(x: xCell, y: yCell))
-        path.addLine(to: CGPoint(x: xCell + wCell, y: yCell))
-        path.addLine(to: CGPoint(x: xCell + wCell, y: yCell + wCell))
-        path.addLine(to: CGPoint(x: xCell, y: yCell + wCell))
-        path.closeSubpath()
-        return path
+        for cell in 0..<size {
+            let (x,y) = transform(cell)
+            let xCell = wCell * CGFloat(x)
+            let yCell = hCell * CGFloat(y)
+            let path = CGMutablePath()
+            path.move(to: CGPoint(x: xCell, y: yCell))
+            path.addLine(to: CGPoint(x: xCell + wCell, y: yCell))
+            path.addLine(to: CGPoint(x: xCell + wCell, y: yCell + wCell))
+            path.addLine(to: CGPoint(x: xCell, y: yCell + wCell))
+            path.closeSubpath()
+            paths.append(path)
+        }
+        return paths
     }
     
     private func transform(_ position: Int) -> (Int, Int) {
@@ -176,13 +179,13 @@ class HexagonalGrid : Grid {
         }
     }
     
-    func getCellValue(at position: Int) -> Int {
-        let (x,y) = transform(position)
+    func getCellValue(for cellIndex: Int) -> Int {
+        let (x,y) = transform(cellIndex)
         return cells[x][y]
     }
     
-    func getNeighbours(of position: Int) -> [Int] {
-        let (x,y) = transform(position)
+    func getNeighbours(of cellIndex: Int) -> [Int] {
+        let (x,y) = transform(cellIndex)
         var neighbours = [Int]()
         
         neighboursShifts.forEach { (sift) in
@@ -195,13 +198,13 @@ class HexagonalGrid : Grid {
         return neighbours
     }
     
-    func update(cell: Int, value: Int) {
-        let (x,y) = transform(cell)
+    func update(cellIndex: Int, value: Int) {
+        let (x,y) = transform(cellIndex)
         cells[x][y] = value
     }
     
-    func lines(for position: Int) -> [[Int]] {
-        let (x,y) = transform(position)
+    func lines(withCenter cellIndex: Int) -> [[Int]] {
+        let (x,y) = transform(cellIndex)
         var lines = [[Int]]()
         for lineShift in linesShifts {
             var line = [Int]()
@@ -229,13 +232,6 @@ class HexagonalGrid : Grid {
             lines.append(line)
         }
         return lines
-    }
-    
-    func path(for cellIndex: Int, with width: CGFloat, with height: CGFloat) -> CGPath {
-                
-        
-
-        return CGMutablePath()
     }
     
     func paths(with width: CGFloat, with height: CGFloat) -> [CGPath] {
@@ -302,6 +298,4 @@ class HexagonalGrid : Grid {
             mapCoordinates == coordinates
         } ?? -1
     }
-    
-    
 }
